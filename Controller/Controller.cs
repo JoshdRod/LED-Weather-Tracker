@@ -6,11 +6,16 @@ using System.Net.Http.Headers;
 
 namespace Controller 
 {
-    class C {
+    class Controller {
+        private IConfiguration configuration;
+        public Controller(IConfiguration iConfig)
+        {
+            configuration = iConfig;
+        }
         public static void Main() 
         {
             // Make api request
-            string requestBody = "api.openweathermap.org/data/2.5/weather?lat=48.8584&lon=2.2945&appid=fbadde9fa3104cd42cf4f93d80a27bc7";
+            string requestBody = $"api.openweathermap.org/data/2.5/weather?lat=48.8584&lon=2.2945&appid={configuration.GetSection("API_KEY").Value}";
             static HttpClient client = new HttpClient();
             HttpResponseMessage response = await client.GetAsync(requestBody);
             if (response.IsSuccessStatusCode) {
