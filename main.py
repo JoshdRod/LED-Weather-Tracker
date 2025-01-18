@@ -12,3 +12,9 @@ s.listen(1) # socket is now listening for new connections - if 1 connection is r
 conn, addr = s.accept()
 print(f"Connection from {addr}")
 # When it recieves a message (chance of rain), print it
+while True:
+    data = conn.recv(1024).decode()
+    if not data:
+        break
+
+    print(f"Recieved: {data}")
