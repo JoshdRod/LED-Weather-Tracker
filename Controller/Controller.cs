@@ -6,20 +6,18 @@ using System.Net.Http.Headers;
 
 namespace Controller 
 {
-    class Controller {
-        private IConfiguration configuration;
-        public Controller(IConfiguration iConfig)
-        {
-            configuration = iConfig;
-        }
-        public static void Main() 
+    class Program {
+        public static async Task Main() // Main needs to return a Task here, becuase it's an async method
         {
             // Make api request
-            string requestBody = $"api.openweathermap.org/data/2.5/weather?lat=48.8584&lon=2.2945&appid={configuration.GetSection("API_KEY").Value}";
-            static HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(requestBody);
+            var builder = WebApplication.CreateBuilder(); // Figure out what WebApplication builder is, and why it gets the appsettings.json file!
+            var configuration = builder.Configuration;
+            string requestBody = $"https://api.openweathermap.org/data/2.5/weather?lat=48.8584&lon=2.2945&appid={configuration.GetSection("API_KEY").Value}";
+            
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response = await httpClient.GetAsync(requestBody);
             if (response.IsSuccessStatusCode) {
-                Console.WriteLine(response.Content);
+                Console.WriteLine(await response.Content.ReadAsStringAsync());
             }
             // Send response to python server
             Console.WriteLine("Starting!");
@@ -29,13 +27,13 @@ namespace Controller
 
             // Wrapping our TcpClient in a using block ensures that the socket is CLOSED once we're done! 
             // This is important, becuase if we don't tell the OS to close a socket, it gets left open, and takes up space in OS memory
-            using (TcpClient client = new TcpClient(serverIp, port))
+            using (TcpClient tcpClient = new TcpClient(serverIp, port))
             {
                 Console.WriteLine("Enter Message :");
-                string userInput = Console.ReadLine();
+                string userInput = Console.ReadLine() ?? "";
                 byte[] data = System.Text.Encoding.ASCII.GetBytes(userInput);
 
-                NetworkStream stream = client.GetStream();
+                NetworkStream stream = tcpClient.GetStream();
 
                 stream.Write(data, 0, data.Length);
 
