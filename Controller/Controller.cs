@@ -16,8 +16,9 @@ namespace Controller
             
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response = await httpClient.GetAsync(requestBody);
+            string responseText = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode) {
-                Console.WriteLine(await response.Content.ReadAsStringAsync());
+                Console.WriteLine(responseText);
             }
             // Send response to python server
             Console.WriteLine("Starting!");
@@ -29,9 +30,7 @@ namespace Controller
             // This is important, becuase if we don't tell the OS to close a socket, it gets left open, and takes up space in OS memory
             using (TcpClient tcpClient = new TcpClient(serverIp, port))
             {
-                Console.WriteLine("Enter Message :");
-                string userInput = Console.ReadLine() ?? "";
-                byte[] data = System.Text.Encoding.ASCII.GetBytes(userInput);
+                byte[] data = System.Text.Encoding.ASCII.GetBytes(responseText);
 
                 NetworkStream stream = tcpClient.GetStream();
 

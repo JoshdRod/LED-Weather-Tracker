@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\joshr\\OneDrive\\Documents\\Projects\\Python Projects\\LED Rain Tracker\\Controller\\Controller.csproj": {}
+    "C:\\Users\\joshr\\OneDrive\\Documents\\Projects\\Python Projects\\LED Rain Tracker\\Controller\\Controller.csproj": {}
   },
   "projects": {
-    "c:\\Users\\joshr\\OneDrive\\Documents\\Projects\\Python Projects\\LED Rain Tracker\\Controller\\Controller.csproj": {
+    "C:\\Users\\joshr\\OneDrive\\Documents\\Projects\\Python Projects\\LED Rain Tracker\\Controller\\Controller.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\joshr\\OneDrive\\Documents\\Projects\\Python Projects\\LED Rain Tracker\\Controller\\Controller.csproj",
+        "projectUniqueName": "C:\\Users\\joshr\\OneDrive\\Documents\\Projects\\Python Projects\\LED Rain Tracker\\Controller\\Controller.csproj",
         "projectName": "Controller",
-        "projectPath": "c:\\Users\\joshr\\OneDrive\\Documents\\Projects\\Python Projects\\LED Rain Tracker\\Controller\\Controller.csproj",
+        "projectPath": "C:\\Users\\joshr\\OneDrive\\Documents\\Projects\\Python Projects\\LED Rain Tracker\\Controller\\Controller.csproj",
         "packagesPath": "C:\\Users\\joshr\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\joshr\\OneDrive\\Documents\\Projects\\Python Projects\\LED Rain Tracker\\Controller\\obj\\",
+        "outputPath": "C:\\Users\\joshr\\OneDrive\\Documents\\Projects\\Python Projects\\LED Rain Tracker\\Controller\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\joshr\\AppData\\Roaming\\NuGet\\NuGet.Config",
