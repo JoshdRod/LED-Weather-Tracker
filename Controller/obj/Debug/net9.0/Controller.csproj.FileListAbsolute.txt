@@ -27,3 +27,6 @@ C:\Users\joshr\OneDrive\Documents\Projects\Python Projects\LED Rain Tracker\Cont
 C:\Users\joshr\OneDrive\Documents\Projects\Python Projects\LED Rain Tracker\Controller\obj\Debug\net9.0\Controller.pdb
 C:\Users\joshr\OneDrive\Documents\Projects\Python Projects\LED Rain Tracker\Controller\obj\Debug\net9.0\Controller.genruntimeconfig.cache
 C:\Users\joshr\OneDrive\Documents\Projects\Python Projects\LED Rain Tracker\Controller\obj\Debug\net9.0\ref\Controller.dll
+C:\Users\joshr\OneDrive\Documents\Projects\Python Projects\LED Rain Tracker\Controller\bin\Debug\net9.0\Newtonsoft.Json.dll
+C:\Users\joshr\OneDrive\Documents\Projects\Python Projects\LED Rain Tracker\Controller\obj\Debug\net9.0\Controller.csproj.AssemblyReference.cache
+C:\Users\joshr\OneDrive\Documents\Projects\Python Projects\LED Rain Tracker\Controller\obj\Debug\net9.0\Controller.csproj.Up2Date

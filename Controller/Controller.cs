@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace Controller 
 {
@@ -12,11 +13,12 @@ namespace Controller
             // Make api request
             var builder = WebApplication.CreateBuilder(); // Figure out what WebApplication builder is, and why it gets the appsettings.json file!
             var configuration = builder.Configuration;
-            string requestBody = $"https://api.openweathermap.org/data/2.5/weather?lat=48.8584&lon=2.2945&appid={configuration.GetSection("API_KEY").Value}";
+            string requestBody = $"https://api.open-meteo.com/v1/forecast?latitude={configuration.GetSection("latitude").Value}&longitude={configuration.GetSection("longitude").Value}&hourly=precipitation_probability,precipitation&forecast_days=1";
             
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response = await httpClient.GetAsync(requestBody);
             string responseText = await response.Content.ReadAsStringAsync();
+            Response responseJson = JsonConvert.DeserializeObject<Response>(responseText);
             if (response.IsSuccessStatusCode) {
                 Console.WriteLine(responseText);
             }
@@ -40,5 +42,23 @@ namespace Controller
             }
 
         }
+    }
+
+    public class Hourly
+    {
+        [JsonProperty("time")]
+        public List<string> Time { get; set; }
+
+        [JsonProperty("precipitation_probability")]
+        public List<int> PrecipitationProbability { get; set; }
+
+        [JsonProperty("precipitation")]
+        public List<double> Precipitation { get; set; }
+
+    }
+    public class Response
+    {
+        [JsonProperty("hourly")]
+        public Hourly Hourly {get; set;}
     }
 }
