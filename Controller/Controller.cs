@@ -13,15 +13,24 @@ namespace Controller
             // Make api request
             var builder = WebApplication.CreateBuilder(); // Figure out what WebApplication builder is, and why it gets the appsettings.json file!
             var configuration = builder.Configuration;
-            string requestBody = $"https://api.open-meteo.com/v1/forecast?latitude={configuration.GetSection("latitude").Value}&longitude={configuration.GetSection("longitude").Value}&hourly=precipitation_probability,precipitation&forecast_days=1";
+            string requestBody = $"https://api.open-meteo.com/v1/forecast?latitude={configuration.GetSection("latitude").Value}&longitude={configuration.GetSection("longitude").Value}&hourly=precipitation_probability,precipitation&forecast_hours=12";
             
             HttpClient httpClient = new HttpClient();
             HttpResponseMessage response = await httpClient.GetAsync(requestBody);
+
+            if (response.Content is null) {
+                Console.WriteLine("Error in HTTP request");
+                return;
+            }
+
+            // Convert data into a percentage to send to python server
             string responseText = await response.Content.ReadAsStringAsync();
             Response responseJson = JsonConvert.DeserializeObject<Response>(responseText);
-            if (response.IsSuccessStatusCode) {
-                Console.WriteLine(responseText);
-            }
+
+            double maxProb = Enumerable.Max(responseJson.Hourly.PrecipitationProbability);
+            double maxIntensity = Enumerable.Max(responseJson.Hourly.Precipitation);
+
+            double probability = Math.Tanh(maxProb) * Math.Tanh(maxIntensity) * 100
             // Send response to python server
             Console.WriteLine("Starting!");
 
