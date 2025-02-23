@@ -13,7 +13,8 @@ conn, addr = s.accept()
 print(f"Connection from {addr}")
 # When it recieves a message (chance of rain), print it
 while True:
-    data = conn.recv(1024).decode()
+    # data = conn.recv(1024).decode()
+    data = int.from_bytes(conn.recv(1024))
     if not data:
         break
 

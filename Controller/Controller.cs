@@ -4,6 +4,8 @@ using System.Net.Sockets;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
+using System.Text;
+using System.ComponentModel;
 
 namespace Controller 
 {
@@ -16,7 +18,7 @@ namespace Controller
             string requestBody = $"https://api.open-meteo.com/v1/forecast?latitude={configuration.GetSection("latitude").Value}&longitude={configuration.GetSection("longitude").Value}&hourly=precipitation_probability,precipitation&forecast_hours=12";
             
             HttpClient httpClient = new HttpClient();
-            HttpResponseMessage response = await httpClient.GetAsync(requestBody);
+            HttpResponseMessage? response = await httpClient.GetAsync(requestBody);
 
             if (response.Content is null) {
                 Console.WriteLine("Error in HTTP request");
@@ -25,12 +27,18 @@ namespace Controller
 
             // Convert data into a percentage to send to python server
             string responseText = await response.Content.ReadAsStringAsync();
-            Response responseJson = JsonConvert.DeserializeObject<Response>(responseText);
+            Response? responseJson = JsonConvert.DeserializeObject<Response>(responseText);
+            if (responseJson is null) {
+                Console.WriteLine("Error in converting HTTP request to JSON!");
+                return;
+            }
 
             double maxProb = Enumerable.Max(responseJson.Hourly.PrecipitationProbability);
             double maxIntensity = Enumerable.Max(responseJson.Hourly.Precipitation);
 
-            double probability = Math.Tanh(maxProb) * Math.Tanh(maxIntensity) * 100
+            double probability = (int)Math.Round(Math.Tanh(maxProb) * Math.Tanh(maxIntensity) * 100);
+            string probabilityString = probability.ToString();
+            Console.WriteLine(probabilityString);
             // Send response to python server
             Console.WriteLine("Starting!");
 
@@ -41,7 +49,8 @@ namespace Controller
             // This is important, becuase if we don't tell the OS to close a socket, it gets left open, and takes up space in OS memory
             using (TcpClient tcpClient = new TcpClient(serverIp, port))
             {
-                byte[] data = System.Text.Encoding.ASCII.GetBytes(responseText);
+                // byte[] data = Encoding.ASCII.GetBytes(probabilityString);
+                byte[] data = BitConverter.GetBytes(probability);
 
                 NetworkStream stream = tcpClient.GetStream();
 
